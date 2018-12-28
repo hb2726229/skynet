@@ -2,6 +2,7 @@ import config
 import discord
 import random
 
+from commands import kick
 from discord import Member
 from discord.ext import commands
 from datetime import date
@@ -12,28 +13,17 @@ TOKEN = config.discord_token
 client = commands.Bot(command_prefix="!")
 
 # removes default help command
-client.remove_command('help')
+# client.remove_command('help')
 
 today = date.today()
+
+extensions = ['commands.kick']
 
 
 @client.event
 async def on_ready():
     await client.change_presence(game=discord.Game(name="Type !help for info"))
     print("Skynet is ready")
-
-
-# Kick users
-@client.command(pass_context=True)
-@commands.has_permissions(kick_members=True)
-async def kick(ctx, user: Member):
-    embed = discord.Embed(
-        title="Kick",
-        description="{user} has been kicked!".format(user=user.display_name),
-        colour=random.randint(0, 0xFFFFFF))
-
-    await client.kick(user)
-    await client.say(embed=embed)
 
 
 # Ban users
@@ -104,5 +94,12 @@ async def clear(ctx, user: Member = None, lim: int = 10):
 async def ping():
     await client.say('pong')
 
+
+if __name__ == "__main__":
+    for lib in extensions:
+        try:
+            client.load_extension(lib)
+        except Exception as error:
+            print("{} cannot be loaded. {{}}".format(lib, error))
 
 client.run(TOKEN)

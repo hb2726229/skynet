@@ -1,5 +1,7 @@
 config.py
 
+.__pycache__/*
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

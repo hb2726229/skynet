@@ -97,7 +97,7 @@ async def clear(ctx, user: Member = None, lim: int = 10):
             total=len(msgs), target=user)
 
     await client.delete_messages(msgs)
-    await client.say(bot_msg)
+    await client.say(bot_msg, delete_after=3)
 
 
 @client.command()
